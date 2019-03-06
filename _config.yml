@@ -1,4 +1,12 @@
 #theme: jekyll-theme-cayman
-remote_theme: poole/hyde
-title: Hey! You are reading Dasha's blog.
-description: Some posts on JS, Java, Angular and other interesting technical stuff.
+remote_theme: "mmistakes/minimal-mistakes@4.15.2"
+
+# Site Settings
+locale                   : "en-US"
+title                    : "Hey! You are reading Dasha's blog."
+name                     : "Daria HERVIEUX"
+description              : "Some posts on JS, Java, Angular and other interesting technical stuff."
+
+# Plugins (previously gems:)
+plugins:
+  - jekyll-include-cache
