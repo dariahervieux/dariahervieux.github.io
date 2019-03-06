@@ -1,4 +1,4 @@
 #theme: jekyll-theme-cayman
-remote-theme: poole/hyde
+remote_theme: poole/hyde
 title: Hey! You are reading Dasha's blog.
 description: Some posts on JS, Java, Angular and other interesting technical stuff.
