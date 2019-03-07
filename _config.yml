@@ -1,12 +1,58 @@
 #theme: jekyll-theme-cayman
 remote_theme: "mmistakes/minimal-mistakes@4.15.2"
+minimal_mistakes_skin: "dark"
+masthead_title: "Dasha's blog"
 
 # Site Settings
 locale                   : "en-US"
 title                    : "Hey! You are reading Dasha's blog."
 name                     : "Daria HERVIEUX"
 description              : "Some posts on JS, Java, Angular and other interesting technical stuff."
+search                   : true
+
+#Profile configuration
+author:
+  name     : "Daria HERVIEUX"
+  avatar   : "/assets/images/author.png"
+  bio      : "Curious. Passionate. Software engineer."
+  location : "Somewhere on Earth, most likely in France."
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/dariahervieux"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin-in"
+      url: "https://github.com/dariahervieux"
+
+#comments provider configuration (defaults are configured in the theme)
+comments:
+  provider       : "staticman_v2"
+  staticman:
+    branch       : "master"
+    moderation   : false
+
+# Social Sharing
+social:
+  name                   : "Daria HERVIEUX"
+  links: https://www.linkedin.com/in/daria-hervieux/
+
 
 # Plugins (previously gems:)
 plugins:
   - jekyll-include-cache
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      comments: true
+      layout: single
+      author_profile: true
+      share: true
+  - scope:
+      path: ""
+      type: pages
+    values:
+      author_profile: true
