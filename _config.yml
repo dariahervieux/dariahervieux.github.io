@@ -15,7 +15,7 @@ author:
   name     : "Daria HERVIEUX"
   avatar   : "/assets/images/author.png"
   bio      : "Curious. Passionate. Software engineer."
-  location : "Somewhere on Earth, most likely in France."
+  location : "France."
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
