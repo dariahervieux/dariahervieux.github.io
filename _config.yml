@@ -10,6 +10,10 @@ name                     : "Daria HERVIEUX"
 description              : "Some posts on JS, Java, Angular and other interesting technical stuff."
 search                   : true
 
+# number of posts to show
+paginate: 5
+paginate_path: /page:num/
+
 #Profile configuration
 author:
   name     : "Daria HERVIEUX"
@@ -40,6 +44,8 @@ social:
 # Plugins (previously gems:)
 plugins:
   - jekyll-include-cache
+  - jekyll-paginate
+  - jemoji
 
 defaults:
   # _posts

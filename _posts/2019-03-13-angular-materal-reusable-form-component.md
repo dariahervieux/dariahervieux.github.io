@@ -1,17 +1,23 @@
-# Making reusable form component for Angular Material
 
-TL;DR
-This article explains two ways of creating and managing reusable components regrouping several inputs in an Angular form.
-First method is to handle only the visual template of the reusable component and let the parent component fully control the child form group, which belongs to the reusable component.
-Second method is to encapsulate component's logic and add a child form group to a parent dynamicly.
+<p align="center">
+  <figure>
+    <img src="https://farm9.staticflickr.com/8137/8705974432_a617300057_h.jpg" alt="Red Blocks by Ram Yoga" 
+    style="width: 100%;  height: auto;">
+  </figure>
+  <figcaption>"Red Blocks" by <a href="https://www.flickr.com/photos/ramyoga/8705974432/">Ram Yoga</a></figcaption>
+<p>
 
-This article is a result of my experiments with creating reusable form group child copoments.
+> **TL;DR** This article describes two possible ways of creating and managing reusable components regrouping several inputs in an Angular form.
+> First method is to handle only the visual template of the reusable component and let the parent component fully control the child form group, which belongs to the reusable component.
+> Second method is to encapsulate component's logic and add a child form group to a parent dynamically.
+
+This article is a result of my experiments with creating reusable form group child components.
 
 ## Why bother
 
-Recently I faced a problem of creating reusable components to homogenize the behavior and UX of an Angular application forms. So the goal to have is a set of simple pre-configured general-purpose form components. When creating a new form with trivial behaviors one can choose from the pre-configured components and construct the required form.
+Recently I faced a problem of creating reusable components to homogenize the behavior and UX of an Angular application. So the goal is to have is a set of simple pre-configured general-purpose form components. When creating a new form with trivial behaviors one can choose from the pre-configured components and construct the required form.
 
-The application in question is written using Angular and Material, so the reusable components would use Material components. The application uses [ReactiveForms]() to handle user input.
+The application in question is written using Angular and [Material](https://material.angular.io/) components, so the reusable components would use Material components. The application uses [ReactiveForms](https://angular.io/guide/reactive-forms) to handle user input.
 
 ## Experiments
 
@@ -37,7 +43,7 @@ Stackblitz of the example can be found [here](https://stackblitz.com/edit/angula
 Here is an extract of the parent component code:
 
 _app.component.ts_
-```
+```ts
 export class AppComponent  {
   ...
   public simpleForm: FormGroup;
@@ -68,7 +74,7 @@ When the value of a select is changed it is shown on the page.
 Let's see how the parent lets its child know that he is a part of a bigger picture.
 
 _app.component.html_
-```
+```html
 <form [formGroup]="simpleForm">
   <input matInput formControlName="name"/>
   <!-- Passing parent form, options list and control name to use -->
@@ -82,7 +88,7 @@ _app.component.html_
 And here is a child component.
 
 _simple-select.component.ts_
-```
+```ts
 export class SimpleSelectComponent {
   /**
    * List of options to use
@@ -107,7 +113,7 @@ The name for the select input control is passed as component input named `formIn
 And finally here is a template of the reusable component example.
 
 _simple-select.component.html_
-```
+```html
 <form [formGroup]="parentForm">
 <mat-form-field>
   <mat-select placeholder="Simple Select" formControlName="{{formInnerControlName}}">
@@ -140,7 +146,8 @@ In the example below, which was inspired by  Jeroen Bastijns's article, a reusab
 
 Stackblitz of the example can be found [here](https://stackblitz.com/edit/angular-xxhs6b).
 
-```
+_simple-select.component.ts_
+```ts
 export class SimpleSelectComponent implements OnInit {
  ...
   /**
@@ -163,7 +170,8 @@ export class SimpleSelectComponent implements OnInit {
 
 The parent subscribes to 'onComponentReady' event and adds a child to its root FormGroup.
 
-```
+_app.component.ts_
+```ts
 export class AppComponent  {
   public simpleForm: FormGroup;
   ...
@@ -183,7 +191,8 @@ export class AppComponent  {
 
 And here is a template of the parent component.
 
-```
+_app.component.html_
+```html
 <form [formGroup]="simpleForm">
   <input placeholder="Name" matInput formControlName="name"/>
   <simple-select (onComponentReady)="addChild('selectGroup', $event)" 
@@ -196,7 +205,8 @@ And here is a template of the parent component.
 
 So the reusable 'simple-select' form component encapsulates all the logic of handling its inputs, the select in this case. Notice 'required' and 'notEmpty' input properties of the component which are used to configure the component behavior.
 
-```
+_simple-select.component.ts_
+```ts
 export class SimpleSelectComponent implements OnInit {
   ...
 
@@ -232,7 +242,8 @@ export class SimpleSelectComponent implements OnInit {
 
 The template of the reusable component.
 
-```
+_simple-select.component.html_
+```html
 <form [formGroup]="componentFormGroup">
 <mat-form-field>
   <mat-select placeholder="Simple Select" formControlName="select">
