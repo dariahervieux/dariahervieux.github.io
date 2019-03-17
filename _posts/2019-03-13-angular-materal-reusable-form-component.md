@@ -1,11 +1,13 @@
+---
+title: "Angular: experimenting with reusable form components"
+categories:
+  - Web
+tags:
+  - angular
+  - material
+---
 
-<p align="center">
-  <figure>
-    <img src="https://farm9.staticflickr.com/8137/8705974432_a617300057_h.jpg" alt="Red Blocks by Ram Yoga" 
-    style="width: 100%;  height: auto;">
-  </figure>
-  <figcaption>"Red Blocks" by <a href="https://www.flickr.com/photos/ramyoga/8705974432/">Ram Yoga</a></figcaption>
-<p>
+{% include figure image_path="https://farm9.staticflickr.com/8137/8705974432_a617300057_h.jpg" alt="Red Blocks by Ram Yoga" caption="'Red Blocks' by [Ram Yoga](https://www.flickr.com/photos/ramyoga/8705974432/)" %}
 
 > **TL;DR** This article describes two possible ways of creating and managing reusable components regrouping several inputs in an Angular form.
 > First method is to handle only the visual template of the reusable component and let the parent component fully control the child form group, which belongs to the reusable component.
