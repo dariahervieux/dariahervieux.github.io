@@ -7,6 +7,7 @@ tags:
   - spring-boot
 ---
 
+> **TL;DR** In depth explanation of exception handling for Spring MVC in a Spring Boot application: exception handler types, handlers ordering, available customization means.
 
 ## Spring Boot auto-configuration
 
