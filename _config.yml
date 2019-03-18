@@ -11,7 +11,7 @@ description              : "Some posts on JS, Java, Angular and other interestin
 search                   : true
 
 # activate pagination - number of posts to show
-paginate: 1
+paginate: 5
 paginate_path: "/page:num/"
 
 # Collections
