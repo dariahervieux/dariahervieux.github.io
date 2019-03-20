@@ -31,7 +31,80 @@ There are several ways to customize the behavior of error handling and/or the co
 2. The application can provide custom view servlet server page(s) and custom view content. For an html view, the page format can be either `jps` or `html` with [Thymleaf](https://www.thymeleaf.org/) to render model attributes filled by the error controller. 
 3. The application can do both: customize the behavior by implementing `ErrorController` and customize the error page view and/or error model object.
 
-### Error view page
+### Customizing error view page
+
+The default error page, which you already saw perhaps, is a 'Whitelabel error page' static view (created in the code directly) configured within `ErrorMvcAutoConfiguration`. It is served by default by `/error` endpoint.
+
+You can keep the endpoint and just replace the static view by a custom page.
+For it to be picked automatically without any configuration, the page must be called `error.html` and it must be placed in `src/main/resources/templates`folder.
+
+And here is an example of a view we could come up to:
+
+```html
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Oups! An error has occurred trying to process your request. </h1>
+        <h2>No panic. We are already working on it!</h2>
+        <a href="/">Back to Home</a>
+    </body>
+</html>
+```
+
+:bulb: once you have replaced the default static view, you can disable id with `server.error.whitelabel.enabled=false` in the application.properties. 
+
+:bulb: if you with to name your global error page differently, you can use `server.error.path` application property. For example: `server.error.path=/oups`, which should have the corresponding `oups.html` view.
+
+Another approach for error handling is to have several error views, each for a particular error. It is always preferable to provide error details as accurate as possible for user to understand and to respond accordingly.
+For example, we can provide pages for particular errors: `400.html`, `404.html`, `500.html` and a generic `error.html` view.
+
+In this case we can either redirect to these pages **from the error controller**:
+
+```java
+@Controller
+@RequestMapping("${server.error.path:${error.path:/error}}")
+CustomizedErrorController implements ErrorController {
+    ...
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    public String handleError(HttpServletRequest request, Model model) {
+        ...
+        //retrieving http error status code set by the underlying container
+        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+
+        if (status != null) {
+            HttpStatus httpStatus = HttpStatus.resolve((int) status);
+            switch(httpStatus) {
+                case HttpStatus.BAD_REQUEST:
+                    return "400";
+                case HttpStatus.NOT_FOUND:
+                    return "404";
+                case HttpStatus.INTERNAL_SERVER_ERROR:
+                    return "500";
+            }
+        }
+        return "error";
+    }
+}
+```
+
+Or we can redirect from our **application business controllers directly**, if the expected result is a page:
+```java
+@Controller
+@RequestMapping("/user}")
+UserController implements ErrorController {
+    ...
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    public String getUser(HttpServletRequest request, Model model) {
+        User user = getUser();
+        if(user == null) {
+            return "404";
+        }
+        model.addAttribute("user", user);
+        return "user"; // user information page
+    }
+}
+```
+
 
 ## More fine grained exception handlers
 
