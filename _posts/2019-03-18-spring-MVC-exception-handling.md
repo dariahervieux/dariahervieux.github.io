@@ -20,6 +20,11 @@ What it basically does, if no additional configuration provided:
 
 `BasicErrorController` is wired to '/error' view by default. If there is no customized 'error' view in the application, in case of an exception thrown from any controller, the user lands to `/error` whitelabel page, filled with information by BasicErrorController.
 
+## Error page
+
+To sum up, Spring MVC' default error page is `/error`. Default controller behind `/error` endpoint is `BasicErrorController`.
+Let's look how we can customize error handling.
+
 ## Customizing global error handler
 
 `BasicErrorController` is a basic error controller rendering `ErrorAttributes`.
@@ -115,12 +120,25 @@ But in which order? Which one has the effect first?
 
 Let's see in details how it works.
 
-***TBD** HandlerExceptionResolverComposite, text + img
+## Spring MVC standard configuration
 
+[WebMvcConfigurationSupport](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/WebMvcConfigurationSupport.html) provides configuration behind the Spring MVC Java config, which is enabled by [@EnableWebMvc](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/EnableWebMvc.html).
+
+This class registers several beans including the exception handler bean - [HandlerExceptionResolverComposite]().
+The composite exception resolver delegates exception handling to the the list of handlers it holds. Exception is passed through the list of handlers until one of them returns a result (something which is not `null`). This result is considered as the final result of error processing.
+`WebMvcConfigurationSupport` adds the following exception handlers into `HandlerExceptionResolverComposite` in the following order:
+1. ExceptionHandlerExceptionResolver -  for handling exceptions through @ExceptionHandler annotated methods.
+2. ResponseStatusExceptionResolver - for exceptions annotated with @ResponseStatus
+3. DefaultHandlerExceptionResolver - for resolving known Spring exception types (e.g. `HttpRequestMethodNotSupportedException`)
+
+If none of these handlers returns a result, the exception is passed to the underlying container.
+
+The underlying container forwards the exception to the registered error page. In our case this is  `\error`.
+Starting from this point we already know [how](#error-page) the exception is handled afterwards. Great! 
 
 ### Convenient base class
 
-And here it is: [ResponseEntityExceptionHandler](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseEntityExceptionHandler.html)
+To simplify exception handling using @ExceptionHandler, Spring proposes [ResponseEntityExceptionHandler](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseEntityExceptionHandler.html)
 > A convenient base class for @ControllerAdvice classes that wish to provide centralized exception handling across all @RequestMapping methods through @ExceptionHandler methods.
 > This base class provides an @ExceptionHandler method for handling internal Spring MVC exceptions.
 
@@ -133,9 +151,9 @@ Classes annotated with `@ControllerAdvice` can be used at the same time as the g
 
 If application has a controller implementing `ErrorController` it **replaces** `BasicErrorController`.
 
-If any exception occurs in error handling controller, it will go through Spring exception filter and finally if nothing is found this exception will be handled by the underlying application container, e.g. Tomcat. The underlying container will handle the exception and show some error page/message depending on its implementation.
+If any exception occurs in error handling controller, it will go through Spring exception handlers filter and finally if nothing is found this exception will be handled by the underlying application container, e.g. Tomcat. The underlying container will handle the exception and show some error page/message depending on its implementation.
 
-Spring exception filters default order:
+Spring exception handlers default order:
 
 1. First Spring searches for an exception handler (a method annotated with `@ExceptionHandler`) within the classes annotated with `@ControllerAdvice`. This behavior is implemented in [ExceptionHandlerExceptionResolver](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ExceptionHandlerExceptionResolver.html).
 2. Then it checks if the thrown exception is annotated with `@ResponseStatus` or if it derives from `ResponseStatusException`. If so it is handled by [ResponseStatusExceptionResolver](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/mvc/annotation/ResponseStatusExceptionResolver.html).
