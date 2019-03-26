@@ -9,7 +9,7 @@ tags:
 
 > **TL;DR** In depth explanation of exception handling for Spring MVC in a Spring Boot application: exception handler types, handlers ordering, available customization means.
 
-## Spring Boot auto-configuration
+## Spring Boot auto-configuration for error handling
 
 Spring Boot application has a default configuration for error handling - [ErrorMvcAutoConfiguration](https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/servlet/error/ErrorMvcAutoConfiguration.java).
 
@@ -20,12 +20,12 @@ What it basically does, if no additional configuration provided:
 
 `BasicErrorController` is wired to '/error' view by default. If there is no customized 'error' view in the application, in case of an exception thrown from any controller, the user lands to `/error` whitelabel page, filled with information by BasicErrorController.
 
-## Error page
+## Error page customization
 
-To sum up, Spring MVC' default error page is `/error`. Default controller behind `/error` endpoint is `BasicErrorController`.
+As we saw earlier, Spring MVC' default error page is `/error`. Default controller behind `/error` endpoint is `BasicErrorController`.
 Let's look how we can customize error handling.
 
-## Customizing global error handler
+### Customizing global error handler
 
 `BasicErrorController` is a basic error controller rendering `ErrorAttributes`.
 It can either render an html page or provide a serialized `ErrorAttributes` object. 
@@ -56,9 +56,9 @@ And here is an example of a view we could come up to:
 </html>
 ```
 
-:bulb: once you have replaced the default static view, you can disable id with `server.error.whitelabel.enabled=false` in the application.properties. 
+> :bulb: once you have replaced the default static view, you can disable id with `server.error.whitelabel.enabled=false` in the application.properties. 
 
-:bulb: if you with to name your global error page differently, you can use `server.error.path` application property. For example: `server.error.path=/oups`, which should have the corresponding `oups.html` view.
+> :bulb: if you with to name your global error page differently, you can use `server.error.path` application property. For example: `server.error.path=/oups`, which should have the corresponding `oups.html` view.
 
 Another approach for error handling is to have several error views, each for a particular error. It is always preferable to provide error details as accurate as possible for user to understand and to respond accordingly.
 For example, we can provide pages for particular errors: `400.html`, `404.html`, `500.html` and a generic `error.html` view.
@@ -111,7 +111,7 @@ UserController implements ErrorController {
 ```
 
 
-## More fine grained exception handlers
+## More customization: fine grained exception handlers
 
 `BasicErrorController` or `ErrorController` implementation is a **global error handler**. To handle more specific errors, Spring documentation suggest to use `@ExceptionHandler` method annotations or `@ResponseStatus` exception class annotations.
 
@@ -120,7 +120,7 @@ But in which order? Which one has the effect first?
 
 Let's see in details how it works.
 
-## Spring MVC standard configuration
+### Spring MVC exception handlers standard configuration
 
 [WebMvcConfigurationSupport](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/WebMvcConfigurationSupport.html) provides configuration behind the Spring MVC Java config, which is enabled by [@EnableWebMvc](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/EnableWebMvc.html).
 
@@ -136,7 +136,11 @@ If none of these handlers returns a result, the exception is passed to the under
 The underlying container forwards the exception to the registered error page. In our case this is  `\error`.
 Starting from this point we already know [how](#error-page) the exception is handled afterwards. Great! 
 
-### Convenient base class
+Here is a diagram summarizing Spring MVC default behavior for handling application exceptions:
+
+{% include figure image_path="assets/images/Spring-MVC-default-exception-handling.svg" alt="Spring MVC exception handling - default configuration" caption="Spring MVC exception handling - default configuration" %}
+
+### Convenient base class for centralized exception handling
 
 To simplify exception handling using @ExceptionHandler, Spring proposes [ResponseEntityExceptionHandler](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/mvc/method/annotation/ResponseEntityExceptionHandler.html)
 > A convenient base class for @ControllerAdvice classes that wish to provide centralized exception handling across all @RequestMapping methods through @ExceptionHandler methods.
