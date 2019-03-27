@@ -38,11 +38,18 @@ author:
       url: "https://www.linkedin.com/in/daria-hervieux/"
 
 #comments provider configuration (defaults are configured in the theme)
+# comments:
+#   provider       : "staticman_v2"
+#   staticman:
+#     branch       : "master"
+#     moderation   : false
+
+#https://disqus.com/ provider
 comments:
-  provider       : "staticman_v2"
-  staticman:
-    branch       : "master"
-    moderation   : false
+  provider: "disqus"
+  disqus:
+    shortname: "da-sha1"
+
 
 # Social Sharing
 social:
