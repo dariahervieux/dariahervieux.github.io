@@ -9,6 +9,17 @@ tags:
 
 > **TL;DR** In depth explanation of exception handling for Spring MVC in a Spring Boot application: exception handler types, handlers ordering, available customization means.
 
+ **Table of contents**
+
+* [Spring Boot auto-configuration for error handling](#spring-boot-auto-configuration-for-error-handling)
+* [Error page customization](#error-page-customization)
+  - [Customizing global error handler](#customizing-global-error-handler)
+  - [Customizing error view page](#customizing-error-view-page)
+* [More customization: fine grained exception handlers](#more-customization-fine-grained-exception-handlers)
+  - [Spring MVC exception handlers standard configuration](#spring-mvc-exception-handlers-standard-configuration)
+  - [Convenient base class for centralized exception handling](#convenient-base-class-for-centralized-exception-handling)
+* [Takeaways](#takeaways)
+
 ## Spring Boot auto-configuration for error handling
 
 Spring Boot application has a default configuration for error handling - [ErrorMvcAutoConfiguration](https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/web/servlet/error/ErrorMvcAutoConfiguration.java).
