@@ -281,4 +281,4 @@ The second approach offers neater and more understandable integration. Which res
 # References & Credits
 1. [Angular reactive forms guide](https://angular.io/guide/reactive-forms)
 2. Article by Jeroen Bastijns [Angular: Reusable form components](https://medium.com/@bastijns.jeroen/angular-reusable-form-components-f9233193138c)
-3. [Dynamic Nested Reactive Forms In Angular]() https://medium.com/@joshblf/dynamic-nested-reactive-forms-in-angular-654c1d4a769a)
+3. [Dynamic Nested Reactive Forms In Angular](https://medium.com/@joshblf/dynamic-nested-reactive-forms-in-angular-654c1d4a769a)
