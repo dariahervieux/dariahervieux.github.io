@@ -1,17 +1,18 @@
 ---
-title: "Cutom domain configuration for GitHub pages"
+title: "Custom domain configuration for GitHub pages with OVH DNC provider"
 categories:
   - Configuration
 tags:
   - github-pages
   - dns
+  - ovh
 ---
 
 
-> **TL;DR** Quick tutorial for configuring redirection of your custom domain to tour GitHub pages static web-site.
+> **TL;DR** Quick tutorial for configuring redirection of your custom domain to your GitHub pages static web-site.
 
 
-Finally I've chosen my own domain name: **da-sha1.me**. Lovely, isn't it? With a little homage to the theme I cherish the most - security. [SHA1](https://en.wikipedia.org/wiki/SHA-1) is a hashing function, not recommended to be used nowdays however.. Vintage! I like it :smile:.
+Finally I've chosen my own domain name: **da-sha1.me**. Lovely, isn't it? With a little homage to the theme I cherish the most - security. [SHA1](https://en.wikipedia.org/wiki/SHA-1) is a hashing function, not recommended to be used nowadays however.. Vintage! I like it :smile:.
 
 And now straight to the point!
 
