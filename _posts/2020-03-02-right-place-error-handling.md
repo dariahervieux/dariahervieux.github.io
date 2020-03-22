@@ -8,8 +8,8 @@ tags:
 ---
 
 > **TL;DR** Choosing the right place and the right approach to handle an error is crucial when it comes to detecting the error and providing a consistent behavior for business logic. 
-> The key is to thoroughly analyse the use case and the desired behavior and to determine the level of responsibility of each treatment, participating in the implementation of the use-case, for resolving the potential error.
-> It's the use case and business rules which dictate which treatments have low responsibility or hight responsibility. 
+> The key is to thoroughly analyze the use case and the desired behavior and to determine the level of responsibility of each treatment, participating in the implementation of the use-case, for resolving the potential error.
+> It's the use case and business rules which dictate which treatments have low responsibility or high responsibility. 
 > Low responsibility means propagation or generation of an error to pass it over to the caller.
 High responsibility means transforming an error into a meaningful result.
 
@@ -64,7 +64,7 @@ Or like this?
   }
 ```
 
-Don't you think that it looks and feels so wrong! Why? because in both cases the service which "gracefully handles" an error stoles the privilege of handling the error from the caller, which could take care of the error in its specific context. Now the caller is in a situation where it doesn't know that there was an error in the first place and it has a response which finally doesn't worth much, since it's absolutely undistinguishable from the default 'no result'. Really confusing.
+Don't you think that it looks and feels so wrong! Why? because in both cases the service which "gracefully handles" an error stoles the privilege of handling the error from the caller, which could take care of the error in its specific context. Now the caller is in a situation where it doesn't know that there was an error in the first place and it has a response which finally doesn't worth much, since it's absolutely indistinguishable from the default 'no result'. Really confusing.
 
 So what it is all about?
 
@@ -78,14 +78,14 @@ Each use case implementation is a chain of calls to different services. Each hig
 When a starting point of a potential error  is identified, we need to walk through the call stack bottom up from the identified point and up to the highest level, and identify the responsibility of each treatment in the stack for handling the error:
 
 * low responsibility - the current treatment can do nothing *meaningful* with the error, other than propagating as is it of transforming it into another error
-* hight responsibility - the error can be transformed into a result, which is meaningful for the caller.
+* high responsibility - the error can be transformed into a result, which is meaningful for the caller.
 
-{% include figure image_path="asset/images/articles/Errors/error-bubbling.svg" alt="Error bubbling." caption="Error bubbling." %}
+{% include figure image_path="assets/images/articles/Errors/error-bubbling.svg" alt="Error bubbling." caption="Error bubbling." %}
 
 Here are questions which help determine the level of responsibility:
 
 1. Do business rules or use-case requirements allow the current treatment (the callee) handle the error so that the result is *still meaningful* for the caller?
-2. Are there any rules/requirements which demand the current treatement to generate and/or to propagate the error? 
+2. Are there any rules/requirements which demand the current treatment to generate and/or to propagate the error? 
 
 
 ## Examples
@@ -279,13 +279,13 @@ public class BookAccess {
 }
 ```
 
-It is worth mentionning that [`EntityNotFoundException`](https://docs.jboss.org/hibernate/jpa/2.2/api/javax/persistence/EntityNotFoundException.html) and [`QueryTimeoutException`](https://docs.jboss.org/hibernate/jpa/2.2/api/javax/persistence/QueryTimeoutException.html) are runtime exceptions and they would be propagated up to web service and, if not caught, would cause Internal Server Error (HTTP code 500) returned to the front application.
+It is worth mentioning that [`EntityNotFoundException`](https://docs.jboss.org/hibernate/jpa/2.2/api/javax/persistence/EntityNotFoundException.html) and [`QueryTimeoutException`](https://docs.jboss.org/hibernate/jpa/2.2/api/javax/persistence/QueryTimeoutException.html) are runtime exceptions and they would be propagated up to web service and, if not caught, would cause Internal Server Error (HTTP code 500) returned to the front application.
 That default behavior doesn't suite me, because :
 
 * I'd like my web service to return Not Found error (HTTP code 404) in case the requested book doesn't exist.
 * I want Service Unavailable code (HTTP code 503) if the data base is not responding.
 
-To acheave this I prefer to catch persistance provider exceptions at persistance layer and transform them in business exception.This ways I decouple persistance layer from the rest of the application and define a clear interface. So I introduce two business exceptions `BookNotFoundException` and `StorageNotAvailableException`.
+To achieve this I prefer to catch persistence provider exceptions at persistence layer and transform them in business exception.This ways I decouple persistence layer from the rest of the application and define a clear interface. So I introduce two business exceptions `BookNotFoundException` and `StorageNotAvailableException`.
 
 ```java
 public interface BookStorage {
@@ -322,7 +322,7 @@ public class BookAccess {
 
   @Transactional(readOnly = true)
   public BookDetails getDetails(Reference reference) throws BookNotFoundException, StorageNotAvailableException {
-    Objects.requireNotNull("Reference is mandatory, can not ne null");
+    Objects.requireNotNull("Reference is mandatory, can not be null");
     Book book = storage.getByReference(criteria);
     return book.getDetails();
   }
