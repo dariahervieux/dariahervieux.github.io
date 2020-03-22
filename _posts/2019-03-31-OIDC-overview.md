@@ -12,6 +12,10 @@ tags:
 
 ## Overview
 
+Have you heard of OAuth 2.0? 
+Not yet? Aouch! This article assumes that you are already familiar with the basics of OAuth 2.0.
+To get more information about OAuth 2.0, you can check out [OAuth 2 Simplified article](https://aaronparecki.com/oauth-2-simplified/) by Aaron Parecki. 
+
 OpenID Connect 1.0 (OIDC) is a simple identity layer on top of the OAuth 2.0 [RFC6749](https://tools.ietf.org/html/rfc6749) protocol.
 
 OIDC specification consists of several parts, some of them are optional. In this article we will focus only of the mandatory parts:
