@@ -4,8 +4,8 @@
 
 @charset "utf-8";
 
-$right-sidebar-width-narrow: 100px;
-$right-sidebar-width: 150px;
+$right-sidebar-width-narrow: 150px;
+$right-sidebar-width: 200px;
 $right-sidebar-width-wide: 300px;
 
 $background-color:#0e1e34;
@@ -15,4 +15,16 @@ $background-color:#0e1e34;
 
 pre.highlight {
     font-size: 0.9em;
+}
+
+.page {
+    @include breakpoint($large) {
+      width: calc(100% - #{$right-sidebar-width-narrow});
+      padding-right: calc(#{$right-sidebar-width-narrow} * 0.5);
+    }
+
+    @include breakpoint($x-large) {
+      width: calc(100% - #{$right-sidebar-width});
+      padding-right: calc(#{$right-sidebar-width} * 0.5);
+    }
 }
