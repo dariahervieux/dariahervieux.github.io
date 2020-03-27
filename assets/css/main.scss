@@ -1,13 +1,18 @@
-
 ---
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 
 @charset "utf-8";
 
-$right-sidebar-width-narrow: 150px;
-$right-sidebar-width: 250px;
-$right-sidebar-width-wide: 400px;
+$right-sidebar-width-narrow: 100px;
+$right-sidebar-width: 150px;
+$right-sidebar-width-wide: 300px;
+
+$background-color:#0e1e34;
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+pre.highlight {
+    font-size: 0.9em;
+}

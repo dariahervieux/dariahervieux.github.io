@@ -1,5 +1,5 @@
 #theme: jekyll-theme-cayman
-remote_theme: "mmistakes/minimal-mistakes@4.19.1"
+remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: "dark"
 masthead_title: "Dasha's blog"
 
