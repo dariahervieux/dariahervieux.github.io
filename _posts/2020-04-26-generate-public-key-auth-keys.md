@@ -29,6 +29,8 @@ However, as a developer, you (and me :smile: ) probably need a key par to use fo
       - [Git bash and Pageant](#git-bash-and-pageant)
       - [Git Bash and ssh-agent](#git-bash-and-ssh-agent)
     - [Installing the public key on the remote server from Windows machine](#installing-the-public-key-on-the-remote-server-from-windows-machine)
+    - [Troubleshooting](#troubleshooting)
+      - [plink fails to add git server key to the cache the fist time when running git command](#plink-fails-to-add-git-server-key-to-the-cache-the-fist-time-when-running-git-command)
   - [Linux users](#linux-users)
     - [OpenSSH public key format](#openssh-public-key-format)
     - [Generating key pair with ssh-keygen](#generating-key-pair-with-ssh-keygen)
@@ -186,6 +188,54 @@ $ cat 'ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAkO01VmkGPZbLJTDU0VCjsB/Uib+/77SxGZ9To
 Please mind the '>>' usage, which will append at the end of the file. '>' will *replace* the contents.
 
 Now if everything is configured correctly, next time you launch your PuTTY ssh session to the remote server, or use git commands, the ssh session will be established using your private key.
+
+### Troubleshooting
+
+#### plink fails to add git server key to the cache the fist time when running git command
+
+**Symptoms**: git command hangs after `Store key in cache? (y/n) y`.
+
+```bash
+$ git fetch
+```
+> Looking up host "github.com" for SSH connection  
+> Host key fingerprint is:  
+> ssh-rsa 2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48  
+> The server's host key is not cached in the registry. You  
+> have no guarantee that the server is the computer you  
+> think it is.  
+> The server's rsa2 key fingerprint is:  
+> ssh-rsa 2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48  
+> If you trust this host, enter "y" to add the key to  
+> PuTTY's cache and carry on connecting.  
+> If you want to carry on connecting just once, without  
+> adding the key to the cache, enter "n".  
+> If you do not trust this host, press Return to abandon the  
+> connection.  
+> Store key in cache? (y/n) y  
+>  
+
+**Remedy**: [add the key from PuTTY UI or using plink directly](https://stackoverflow.com/questions/33240137/git-clone-pull-continually-freezing-at-store-key-in-cache).
+
+Example of adding the server key using plink:
+```bat
+>plink -ssh git@github.com  
+```
+> The server's host key is not cached in the registry. You  
+> have no guarantee that the server is the computer you  
+> think it is.  
+> The server's rsa2 key fingerprint is:  
+> ssh-rsa 2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48  
+> If you trust this host, enter "y" to add the key to  
+> PuTTY's cache and carry on connecting.  
+> If you want to carry on connecting just once, without  
+> adding the key to the cache, enter "n".  
+> If you do not trust this host, press Return to abandon the  
+> connection.  
+> Store key in cache? (y/n) y  
+> Using username "git".  
+> Access granted. Press Return to begin session.
+
 
 ## Linux users
 
