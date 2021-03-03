@@ -308,7 +308,7 @@ ssh-add ~/.ssh/id_rsa_gh
 
 Now till the end of your session, there is no need to type a passphrase for your key. Nice!
 But could be better. You can use a script which will load the key automatically once you are logged in.
-There are plenty examples of scripts on the internet. Here is the one from the GitHub [help documentation](https://help.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows):
+There are plenty of examples of scripts on the internet. Here is the one from the GitHub [help documentation](https://help.github.com/en/github/authenticating-to-github/working-with-ssh-key-passphrases#auto-launching-ssh-agent-on-git-for-windows):
 ``` bash
 env=~/.ssh/agent.env
 
@@ -333,16 +333,19 @@ fi
 unset env
 ```
 
-And to properly stop the agent or to get rid of running instances you can add a trap:
-```bash
-trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`;  rm ~/.ssh/.agent.env;' 0
-```
+You can add this script into your `.bashrc` to be launched each time you open your terminal.
 
-And to be really-really sure that you are not leaving any ssh-agent running, you can add the following into your `.logout`:
+To be sure that you are not leaving any ssh-agent running, you can run :
 ```bash
 ssh-add -D
 ssh-agent -k
 ```
+
+To properly stop the agent or to get rid of the running instances you can add a trap to your `.bashrc` which will be executed each time the shell exists:
+```bash
+trap 'test -n "$SSH_AGENT_PID" && eval `/usr/bin/ssh-agent -k`;  rm ~/.ssh/.agent.env;' 0
+```
+
 
 #### Converting *.PPK into OpenSSH private key
 
